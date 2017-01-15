@@ -3,12 +3,13 @@ import argparse
 
 
 def format_price(price):
-    if not isinstance(price, str):
-        raise TypeError('Price should be str')
-    if not re.match('[0-9]+([.][0-9]*)?|[.][0-9]+$', price):
-        raise ValueError('Price should be int or float format')
-    price = int(float(price))
-    return '{:,}'.format(price).replace(',', ' ')
+    if not isinstance(price, str) or not re.match('[0-9]+([.][0-9]*)?|[.][0-9]+$', price):
+        return None
+
+    if float(price).is_integer():
+        return '{:,}'.format(int(price)).replace(',', ' ')
+    else:
+        return '{:,.2f}'.format(float(price)).replace(',', ' ')
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
